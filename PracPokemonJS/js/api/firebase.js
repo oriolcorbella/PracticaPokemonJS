@@ -41,3 +41,13 @@ export async function createUser(username, email) {
 export async function updateUsername(userId, username) {
     await request(`users/${userId}`, 'PATCH', { username });
 }
+
+export async function getRankingEntries() {
+    const data = await request('ranking');
+    return toArray(data);
+}
+
+export async function createRankingEntry(userId, time, numCards) {
+    const result = await request('ranking', 'POST', { userId, time, numCards });
+    return result.name;
+}
