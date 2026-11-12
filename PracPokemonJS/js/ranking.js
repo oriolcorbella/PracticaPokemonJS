@@ -1,9 +1,40 @@
 import { getRankingEntries, getUsers } from './api/firebase.js';
 import { formatTime } from './timer.js';
 
+const MAX_ROWS = 5;
+const TOP_ROWS = 4;
+const DOTS = 'dots';
+
 // Primero más cartas, y con las mismas cartas, menos tiempo
 export function sortRanking(entries) {
     return [...entries].sort((a, b) => b.numCards - a.numCards || a.time - b.time);
+}
+
+// Decide qué filas se ven. Los puntos suspensivos se representan con DOTS
+export function getVisibleRows(entries, newEntryId) {
+    if (entries.length <= MAX_ROWS) {
+        return entries;
+    }
+
+    const newIndex = entries.findIndex((entry) => entry.id === newEntryId);
+
+    // El nuevo está entre los 4 primeros o no hay registro nuevo
+    if (newIndex < TOP_ROWS) {
+        return [...entries.slice(0, TOP_ROWS), DOTS];
+    }
+
+    // El nuevo es el quinto: se enseñan los 5 primeros
+    if (newIndex === TOP_ROWS) {
+        return [...entries.slice(0, MAX_ROWS), DOTS];
+    }
+
+    const rows = [...entries.slice(0, TOP_ROWS), DOTS, entries[newIndex]];
+
+    if (newIndex < entries.length - 1) {
+        rows.push(DOTS);
+    }
+
+    return rows;
 }
 
 function createCell(text) {
@@ -56,7 +87,12 @@ export async function showRanking(newEntryId = null) {
             return;
         }
 
-        const rows = sortedEntries.map((entry) => createEntryRow(entry, newEntryId));
+        const rows = getVisibleRows(sortedEntries, newEntryId).map((row) => {
+            if (row === DOTS) {
+                return createMessageRow('...', 'dots');
+            }
+            return createEntryRow(row, newEntryId);
+        });
 
         rankingBody.replaceChildren(...rows);
     } catch {
