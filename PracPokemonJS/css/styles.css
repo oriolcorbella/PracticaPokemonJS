@@ -1,0 +1,282 @@
+/* ===== Variables y base ===== */
+:root {
+    --color-primary: #e3350d;
+    --color-primary-dark: #b52a0a;
+    --color-secondary: #30a7d7;
+    --color-bg: #f2f2f2;
+    --color-surface: #ffffff;
+    --color-text: #212121;
+    --color-muted: #616161;
+    --color-border: #dddddd;
+    --color-matched: #4caf50;
+    --color-highlight: #ffeb3b;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+h1,
+h2 {
+    margin: 0 0 1rem;
+}
+
+/* ===== Cabecera ===== */
+.app-header {
+    padding: 1rem 1.5rem;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.app-header h1 {
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.app-main {
+    padding: 1.5rem;
+}
+
+/* ===== Botones e inputs ===== */
+.btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: var(--radius);
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+    background-color: #1f86b0;
+}
+
+input {
+    padding: 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: 2px solid var(--color-secondary);
+    border-color: transparent;
+}
+
+label {
+    font-weight: 600;
+}
+
+/* ===== Formulario de registro ===== */
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 380px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.user-form .btn {
+    margin-top: 0.8rem;
+}
+
+/* ===== Vista del juego: 3 zonas ===== */
+.game {
+    display: grid;
+    grid-template-columns: 240px 1fr 380px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.game-controls,
+.board-zone,
+.ranking {
+    padding: 1.2rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.game-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.game-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.timer-box {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+#timer {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.game-message {
+    margin: 0;
+    color: var(--color-matched);
+    font-weight: 600;
+}
+
+.game-message:empty {
+    display: none;
+}
+
+/* ===== Tablero y cartas ===== */
+/* --columns y --card-width los calcula js/board-layout.js según las cartas */
+.game-board {
+    --columns: 4;
+    --card-width: 100px;
+    display: grid;
+    grid-template-columns: repeat(var(--columns), var(--card-width));
+    grid-auto-rows: calc(var(--card-width) * 4 / 3);
+    gap: 12px;
+    justify-content: center;
+    align-content: center;
+    height: calc(100vh - 170px);
+    min-height: 450px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--color-surface);
+    border-radius: var(--radius);
+    background-color: var(--color-primary);
+    background-image: radial-gradient(circle, #ffffff 18%, #212121 19%, #212121 24%, transparent 25%),
+        linear-gradient(to bottom, var(--color-primary) 50%, #ffffff 50%);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card.flipped {
+    background-color: #fafafa;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* los sprites son pixel art: así no se ven borrosos al agrandarlos */
+    image-rendering: pixelated;
+    border-color: var(--color-secondary);
+    cursor: default;
+}
+
+.card.flipped:hover {
+    transform: none;
+}
+
+.card.matched {
+    background-color: var(--color-matched);
+    border-color: #2e7d32;
+}
+
+/* ===== Ranking ===== */
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    word-break: break-word;
+}
+
+.ranking-table th {
+    background-color: var(--color-secondary);
+    color: #ffffff;
+}
+
+.ranking-table tbody tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+.ranking-table tbody tr.highlight {
+    background-color: var(--color-highlight);
+    font-weight: 700;
+}
+
+.ranking-table tr.dots td,
+.ranking-table tr.empty td {
+    text-align: center;
+    color: var(--color-muted);
+}
+
+/* ===== Modal ===== */
+.modal {
+    max-width: 360px;
+    padding: 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal p {
+    margin: 0 0 1rem;
+    color: var(--color-primary-dark);
+    font-weight: 600;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1000px) {
+    .game {
+        grid-template-columns: 1fr;
+    }
+
+    .app-main {
+        padding: 1rem;
+    }
+
+    .game-board {
+        height: 70vh;
+        min-height: 350px;
+    }
+}
