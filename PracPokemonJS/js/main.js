@@ -2,6 +2,7 @@ import { getUserId } from './session.js';
 import { createRankingEntry } from './api/firebase.js';
 import { initRegistration } from './registration.js';
 import { initGameForm } from './game-form.js';
+import { initLogout } from './logout.js';
 import { Game } from './game.js';
 import { Timer, formatTime } from './timer.js';
 import { showRanking } from './ranking.js';
@@ -34,6 +35,7 @@ initRegistration(showGameView);
 initGameForm(game, () => {
     gameMessage.textContent = '';
 });
+initLogout();
 
 if (getUserId()) {
     showGameView();
