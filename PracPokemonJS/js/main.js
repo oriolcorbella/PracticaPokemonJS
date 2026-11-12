@@ -3,6 +3,7 @@ import { initRegistration } from './registration.js';
 import { initGameForm } from './game-form.js';
 import { Game } from './game.js';
 import { Timer, formatTime } from './timer.js';
+import { showRanking } from './ranking.js';
 
 const userForm = document.getElementById('user-form');
 const gameView = document.getElementById('game');
@@ -18,6 +19,7 @@ const game = new Game(document.getElementById('game-board'), timer, handleWin);
 function showGameView() {
     userForm.hidden = true;
     gameView.hidden = false;
+    showRanking();
 }
 
 initRegistration(showGameView);
