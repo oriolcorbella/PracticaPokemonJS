@@ -1,4 +1,5 @@
 import { getUserId } from './session.js';
+import { createRankingEntry } from './api/firebase.js';
 import { initRegistration } from './registration.js';
 import { initGameForm } from './game-form.js';
 import { Game } from './game.js';
@@ -9,8 +10,15 @@ const userForm = document.getElementById('user-form');
 const gameView = document.getElementById('game');
 const gameMessage = document.getElementById('game-message');
 
-function handleWin(time) {
+async function handleWin(time, cardsNumber) {
     gameMessage.textContent = `¡Has ganado en ${formatTime(time)}!`;
+
+    try {
+        const newEntryId = await createRankingEntry(getUserId(), time, cardsNumber);
+        await showRanking(newEntryId);
+    } catch {
+        gameMessage.textContent = 'Has ganado, pero no se ha podido guardar el resultado.';
+    }
 }
 
 const timer = new Timer(document.getElementById('timer'));
