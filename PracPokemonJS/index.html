@@ -21,6 +21,19 @@
         </form>
 
         <div id="game" class="game" hidden>
+            <section class="game-controls">
+                <form id="game-form" class="game-form">
+                    <label for="cards-number">Número de cartas</label>
+                    <input type="number" id="cards-number" name="cards-number" placeholder="Ej: 12">
+                    <button type="submit" id="play-btn" class="btn">Jugar</button>
+                </form>
+                <p class="timer-box">Tiempo: <span id="timer">0m 0s</span></p>
+                <p id="game-message" class="game-message"></p>
+            </section>
+
+            <section class="board-zone">
+                <div id="game-board" class="game-board"></div>
+            </section>
         </div>
     </main>
 
